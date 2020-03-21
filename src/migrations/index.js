@@ -1,5 +1,6 @@
 var Umzug = require("umzug");
 const { sequelize } = require("../models");
+let path = require("path");
 var umzug = new Umzug({
   storage: "sequelize",
   storageOptions: {
@@ -7,23 +8,16 @@ var umzug = new Umzug({
     tableName: "_migration"
   },
   migrations: {
-    params: [
-      sequelize.getQueryInterface(), // queryInterface
-      sequelize.constructor, // DataTypes
-      function() {
-        throw new Error(
-          'Migration tried to use old style "done" callback. Please upgrade to "umzug" and return a promise instead.'
-        );
-      }
-    ],
-    path: "./src/migrations",
-    pattern: /^.*\.js$/
+    params: [sequelize.getQueryInterface()],
+    path: path.join(__dirname)
   }
 });
 
-umzug.up().then(
-  console.log('success'),
-)
+(async () => {
+  // checks migrations and run them if they are not already applied
+  await umzug.up();
+  console.log("All migrations performed successfully");
+})();
 
 module.exports = {
   umzug
