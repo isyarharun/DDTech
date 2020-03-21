@@ -18,8 +18,8 @@ Method: POST\
 Request Body :\
 {\
  "carIds" : array of integer,\
- "customerId": integer\,
-"startDate": date\,
+ "customerId": integer,\
+"startDate": date,\
 "endDate": date\
 }\
 All of the input params are mandatory.\
